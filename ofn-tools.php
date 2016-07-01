@@ -26,25 +26,23 @@
 
 
 function ofn_tools_search_form($atts) {
-    $html = '';
+    $js = ofn_tools_search_form_js();
 
-    $html .= '<form onsubmit="'.ofn_tools_search_form_js().'">'."\n";
-    $html .= '  <input type="text" name="query" />'."\n";
-    $html .= '  <input type="submit" value="Search" />'."\n";
-    $html .= '</form>'."\n";
-
-    return $html;
+    return <<<EOD
+<form onsubmit="$js">
+  <input type="text" name="query" />
+  <input type="submit" value="Search" />
+</form>
+EOD;
 }
 add_shortcode('ofn_search_form', 'ofn_tools_search_form');
 
 function ofn_tools_search_form_js() {
-    $js = '';
+    $js = <<<EOD
+var query=jQuery(this).find('input[name=\\'query\\']').val();
+window.location='http://openfoodnetwork.org.au/producers#/?query='+query;
+return false;
+EOD;
 
-    // HEREDOC + remove newlines?
-
-    $js .= 'var query=jQuery(this).find(\'input[name=\\\'query\\\']\').val();';
-    $js .= 'window.location=\'http://openfoodnetwork.org.au/producers#/?query=\'+query;';
-    $js .= 'return false;';
-
-    return $js;
+    return str_replace("\n", "", $js);
 }
