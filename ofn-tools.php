@@ -26,7 +26,8 @@
 
 
 function ofn_tools_search_form($atts) {
-    $js = ofn_tools_search_form_js();
+    $a = shortcode_atts(array('target' => 'producers'), $atts);
+    $js = ofn_tools_search_form_js($a['target']);
 
     return <<<EOD
 <form onsubmit="$js">
@@ -37,10 +38,10 @@ EOD;
 }
 add_shortcode('ofn_search_form', 'ofn_tools_search_form');
 
-function ofn_tools_search_form_js() {
+function ofn_tools_search_form_js($target) {
     $js = <<<EOD
 var query=jQuery(this).find('input[name=\\'query\\']').val();
-window.location='http://openfoodnetwork.org.au/producers#/?query='+query;
+window.location='http://openfoodnetwork.org.au/$target#/?query='+query;
 return false;
 EOD;
 
